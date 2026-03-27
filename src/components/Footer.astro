@@ -1,0 +1,39 @@
+---
+import { Wallet, User, Users, ShoppingCart } from "lucide-astro"
+
+export type FooterPage = "clicker" | "profile" | "social" | "shop"
+
+interface Props {
+  activePage?: FooterPage
+}
+
+const { activePage } = Astro.props
+
+const navItems: { id: FooterPage; href: string; Icon: any; label: string }[] = [
+  { id: "clicker", href: "/clicker", Icon: Wallet, label: "Clicker" },
+  { id: "profile", href: "/profile", Icon: User, label: "Perfil" },
+  { id: "social", href: "#", Icon: Users, label: "Social" },
+  { id: "shop", href: "#", Icon: ShoppingCart, label: "Tienda" },
+]
+---
+
+<footer
+  class="w-full bg-slate-900/95 border-t border-slate-800 grid grid-cols-4 gap-1 z-50 backdrop-blur-xl p-4 fixed bottom-0 left-1/2 -translate-x-1/2 max-w-xl"
+>
+  {
+    navItems.map(({ id, href, Icon, label }) => (
+      <a
+        href={href}
+        aria-label={label}
+        class:list={[
+          "flex flex-col items-center justify-center p-3 rounded-xl transition-all",
+          activePage === id
+            ? "text-yellow-400 bg-slate-800/60"
+            : "text-slate-400 hover:text-yellow-400 hover:bg-slate-800/50",
+        ]}
+      >
+        <Icon class="w-6 h-6" />
+      </a>
+    ))
+  }
+</footer>

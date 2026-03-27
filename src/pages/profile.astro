@@ -1,0 +1,9 @@
+---
+import UserProfile from "../components/UserProfile.astro"
+import { users } from "../data/users"
+
+// Default profile: first user (Predy)
+const user = users[0]
+---
+
+<UserProfile user={user} />

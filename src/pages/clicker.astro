@@ -1,0 +1,173 @@
+---
+import Layout from "../layouts/Layout.astro"
+import Footer from "../components/Footer.astro"
+import { Monitor } from "lucide-astro"
+
+const clickValue = 230
+const currentXP = 230
+const nextLevelXP = 1200
+const currentLevel = 4
+const nextLevel = 5
+const balance = 4600
+const rank = "TRILLONARIO"
+
+const xpPercent = Math.round((currentXP / nextLevelXP) * 100)
+---
+
+<Layout title="Clicker - Predy Clicker">
+  <main class="flex-1 flex flex-col bg-slate-950 min-h-screen pb-28 relative overflow-hidden">
+
+    <!-- Background glow -->
+    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 bg-blue-900/20 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="flex flex-col items-center px-5 pt-10 gap-6 relative z-10">
+
+      <!-- Credit card (clickable) -->
+      <button
+        id="clickCard"
+        type="button"
+        aria-label="Hacer click"
+        class="card-btn w-full max-w-sm rounded-3xl p-6 relative overflow-hidden select-none active:scale-95 transition-transform duration-100 shadow-2xl"
+      >
+        <!-- Card gradient background -->
+        <div class="absolute inset-0 bg-linear-to-br from-blue-600 via-blue-700 to-blue-900 rounded-3xl"></div>
+        <!-- Shine overlay -->
+        <div class="absolute inset-0 bg-linear-to-tr from-white/5 via-white/10 to-transparent rounded-3xl pointer-events-none"></div>
+        <!-- Decorative circles -->
+        <div class="absolute -top-8 -right-8 w-40 h-40 bg-blue-500/20 rounded-full"></div>
+        <div class="absolute -bottom-12 -left-8 w-48 h-48 bg-blue-800/30 rounded-full"></div>
+
+        <!-- Card content -->
+        <div class="relative z-10">
+          <!-- Top row -->
+          <div class="flex items-center justify-between mb-6">
+            <span class="text-white/90 font-black text-lg tracking-wide">Nivel {currentLevel}</span>
+            <span class="bg-white/15 border border-white/25 text-white text-xs font-black tracking-widest px-3 py-1.5 rounded-full backdrop-blur-sm">
+              {rank}
+            </span>
+          </div>
+
+          <!-- Card icons row -->
+          <div class="flex items-center gap-3 mb-8">
+            <!-- Contactless icon (SVG) -->
+            <svg class="w-8 h-8 text-white/70" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 20c4.4 0 8-3.6 8-8s-3.6-8-8-8" stroke-linecap="round"/>
+              <path d="M12 16c2.2 0 4-1.8 4-4s-1.8-4-4-4" stroke-linecap="round"/>
+              <path d="M12 12.5a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1z" fill="currentColor" stroke="none"/>
+            </svg>
+            <!-- Chip -->
+            <div class="w-10 h-8 rounded-md bg-yellow-300/80 border border-yellow-200/50 grid grid-cols-3 grid-rows-3 gap-px p-1">
+              {Array.from({ length: 9 }).map(() => (
+                <div class="bg-yellow-600/40 rounded-[1px]"></div>
+              ))}
+            </div>
+          </div>
+
+          <!-- Balance -->
+          <div class="flex justify-end">
+            <span class="text-white font-black text-4xl tracking-wider drop-shadow-lg">
+              {balance.toLocaleString("es-ES")}
+            </span>
+          </div>
+        </div>
+      </button>
+
+      <!-- Click value + XP section -->
+      <div class="w-full max-w-sm bg-slate-900/80 border border-slate-800 rounded-3xl p-5 backdrop-blur-sm">
+
+        <!-- Coins per click -->
+        <div class="flex items-center justify-center gap-1.5 mb-5">
+          <span class="text-white font-black text-3xl tracking-tight">{clickValue}</span>
+          <!-- Coin icon -->
+          <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="10" fill="#f59e0b"/>
+            <circle cx="12" cy="12" r="8" fill="#fbbf24"/>
+            <text x="12" y="16" text-anchor="middle" fill="#92400e" font-size="10" font-weight="bold" font-family="Outfit, sans-serif">$</text>
+          </svg>
+          <span class="text-slate-400 font-semibold text-lg">/ Click</span>
+        </div>
+
+        <!-- Level progress -->
+        <div class="flex items-center justify-between text-sm font-bold mb-2">
+          <span class="text-slate-400">Nivel {currentLevel}</span>
+          <span class="text-slate-400">Nivel {nextLevel}</span>
+        </div>
+        <div class="w-full bg-slate-800 rounded-full h-3 overflow-hidden">
+          <div
+            class="h-full bg-linear-to-r from-yellow-400 to-yellow-500 rounded-full transition-all duration-500"
+            style={`width: ${xpPercent}%`}
+          ></div>
+        </div>
+        <p class="text-center text-slate-500 text-sm font-bold mt-2">
+          {currentXP.toLocaleString("es-ES")} / {nextLevelXP.toLocaleString("es-ES")}
+        </p>
+      </div>
+
+      <!-- Multiply button -->
+      <button
+        id="multiplyBtn"
+        type="button"
+        class="w-full max-w-sm bg-blue-900/60 border border-blue-700/50 hover:bg-blue-800/60 active:scale-95 transition-all rounded-2xl p-4 flex items-center justify-center gap-3 shadow-lg"
+      >
+        <Monitor class="w-5 h-5 text-yellow-400" />
+        <span class="text-white font-bold text-base tracking-wide">Multiplicar click</span>
+      </button>
+
+    </div>
+
+    <!-- Floating +coins indicator -->
+    <div id="floatingCoins" class="floating-coins pointer-events-none fixed z-50 font-black text-yellow-400 text-2xl opacity-0 select-none"></div>
+
+  </main>
+
+  <Footer activePage="clicker" />
+</Layout>
+
+<script>
+  const card = document.getElementById("clickCard")
+  const floatingCoins = document.getElementById("floatingCoins")
+
+  let balance = 4600
+  let clickValue = 230
+
+  const showFloatingCoin = (x: number, y: number) => {
+    if (!floatingCoins) return
+    floatingCoins.textContent = `+${clickValue}`
+    floatingCoins.style.left = `${x}px`
+    floatingCoins.style.top = `${y}px`
+    floatingCoins.classList.remove("animate-float")
+    // Force reflow
+    void floatingCoins.offsetWidth
+    floatingCoins.classList.add("animate-float")
+  }
+
+  card?.addEventListener("click", (e) => {
+    balance += clickValue
+
+    const rect = card.getBoundingClientRect()
+    const x = e.clientX - 20
+    const y = e.clientY - 30
+    showFloatingCoin(x, y)
+  })
+</script>
+
+<style>
+  .card-btn {
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
+  }
+
+  .card-btn:active {
+    transform: scale(0.95);
+  }
+
+  @keyframes floatUp {
+    0%   { opacity: 1; transform: translateY(0) scale(1); }
+    60%  { opacity: 1; transform: translateY(-40px) scale(1.1); }
+    100% { opacity: 0; transform: translateY(-80px) scale(0.9); }
+  }
+
+  .animate-float {
+    animation: floatUp 0.75s ease-out forwards;
+  }
+</style>

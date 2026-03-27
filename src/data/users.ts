@@ -1,0 +1,159 @@
+export type User = {
+  id: string
+  name: string
+  userValue: number
+  money: number
+  diamonds: number
+  avatar: string
+  language: string
+  darkMode: number
+  owner: string
+  ownerColor: number
+  ownerName: string
+}
+
+export const users: User[] = [
+  {
+    id: "0000-0001",
+    name: "Predy",
+    userValue: 1000,
+    money: 0,
+    diamonds: 20,
+    avatar:
+      "https://mario.nintendo.com/static/12a46ed6612384e88499f6c8593ef61b/13fb2/mario-unstack-closed.png",
+    language: "ESP",
+    darkMode: 1,
+    owner: "0000-0004",
+    ownerColor: 1,
+    ownerName: "Vilori",
+  },
+  {
+    id: "0000-0002",
+    name: "Peke",
+    userValue: 1000,
+    money: 0,
+    diamonds: 0,
+    avatar:
+      "https://mario.nintendo.com/static/563e133e9adebbe3aea188f8b4f35c6d/13fb2/peach-unstack-closed.png",
+    language: "ENG",
+    darkMode: 0,
+    owner: "0000-0001",
+    ownerColor: 0,
+    ownerName: "Predy",
+  },
+  {
+    id: "0000-0003",
+    name: "Sergete",
+    userValue: 500,
+    money: 0,
+    diamonds: 20,
+    avatar:
+      "https://mario.nintendo.com/static/70a63717b736085b71768be7a2558da7/13fb2/luigi-unstack-closed.png",
+    language: "ESP",
+    darkMode: 1,
+    owner: "0000-0004",
+    ownerColor: 0,
+    ownerName: "Vilori",
+  },
+  {
+    id: "0000-0004",
+    name: "Vilori",
+    userValue: 1000,
+    money: 200,
+    diamonds: 0,
+    avatar:
+      "https://mario.nintendo.com/static/6d1a7f8a5e73b6ac5b152df1ea3e17f0/13fb2/daisy-unstack-closed.png",
+    language: "ESP",
+    darkMode: 0,
+    owner: "0000-0005",
+    ownerColor: 0,
+    ownerName: "Bikos",
+  },
+  {
+    id: "0000-0005",
+    name: "Bikos",
+    userValue: 1000,
+    money: 3000,
+    diamonds: 0,
+    avatar:
+      "https://mario.nintendo.com/static/2208b1d42ecc7ee431fd5321c89dc178/13fb2/yoshi-unstack-closed.png",
+    language: "CAT",
+    darkMode: 1,
+    owner: "0000-0001",
+    ownerColor: 0,
+    ownerName: "Predy",
+  },
+  {
+    id: "0000-0006",
+    name: "Bikosillo",
+    userValue: 1000,
+    money: 10000,
+    diamonds: 0,
+    avatar:
+      "https://mario.nintendo.com/static/d5e5d97d061a0412d4299c4b2d1570a4/13fb2/bowser-unstack-closed.png",
+    language: "ESP",
+    darkMode: 0,
+    owner: "0000-0001",
+    ownerColor: 0,
+    ownerName: "Predy",
+  },
+  {
+    id: "0000-0007",
+    name: "Bikosillito",
+    userValue: 1000,
+    money: 0,
+    diamonds: 0,
+    avatar:
+      "https://mario.nintendo.com/static/75d6ad23ee9360e4dfbee56c8c882e5e/13fb2/waluigi-unstack-closed.png",
+    language: "ESP",
+    darkMode: 0,
+    owner: "0000-0001",
+    ownerColor: 0,
+    ownerName: "Predy",
+  },
+  {
+    id: "0000-0008",
+    name: "Bikosillitirito",
+    userValue: 3000,
+    money: 0,
+    diamonds: 0,
+    avatar:
+      "https://mario.nintendo.com/static/1aa760ce66266be8f8c1b0e7a4005d78/13fb2/wario-unstack-closed.png",
+    language: "ESP",
+    darkMode: 0,
+    owner: "0000-0001",
+    ownerColor: 0,
+    ownerName: "Predy",
+  },
+  {
+    id: "0000-0009",
+    name: "Huguito",
+    userValue: 1000,
+    money: 0,
+    diamonds: 0,
+    avatar:
+      "https://mario.nintendo.com/static/4c824a88f2cd388c923ee0aeb1777cea/13fb2/boo-unstack-closed.png",
+    language: "CAT",
+    darkMode: 1,
+    owner: "0000-0001",
+    ownerColor: 0,
+    ownerName: "Predy",
+  },
+  {
+    id: "0000-0010",
+    name: "Sandrita",
+    userValue: 1000,
+    money: 0,
+    diamonds: 0,
+    avatar:
+      "https://mario.nintendo.com/static/adc750a84fd82295815837189fc509ba/13fb2/rosalina-unstack-closed.png",
+    language: "ENG",
+    darkMode: 0,
+    owner: "0000-0001",
+    ownerColor: 0,
+    ownerName: "Predy",
+  },
+]
+
+export const getUserById = (id: string): User | undefined =>
+  users.find((u) => u.id === id)

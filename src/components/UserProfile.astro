@@ -1,0 +1,481 @@
+---
+import Layout from "../layouts/Layout.astro"
+import Footer from "./Footer.astro"
+import { users, type User } from "../data/users"
+import {
+  Settings,
+  Trophy,
+  Diamond,
+  Star,
+  Coins,
+  Shirt,
+  Crosshair,
+  Medal,
+  Car,
+  Home,
+  ChevronRight,
+  User as UserIcon,
+  Volume2,
+  ZoomIn,
+  Share2,
+  LogOut,
+  X,
+  Bell,
+} from "lucide-astro"
+
+interface Props {
+  user: User
+}
+
+const { user } = Astro.props
+
+const level = Math.floor(user.userValue / 100)
+const stars = user.userValue
+const coins = user.money.toLocaleString("es-ES")
+
+const quickActions = [
+  { icon: Shirt, label: "Skins" },
+  { icon: Crosshair, label: "Weapons" },
+  { icon: Medal, label: "Achievements" },
+  { icon: Car, label: "Garage" },
+  { icon: Home, label: "Base" },
+]
+
+const menuLinks = [
+  { icon: Shirt, label: "PERSONALIZACION" },
+  { icon: Car, label: "GARAJE" },
+]
+---
+
+<Layout title={`${user.name} - Predy Clicker`}>
+  <main class="flex-1 flex flex-col bg-slate-950 min-h-screen pb-28 relative overflow-hidden">
+
+    <!-- Top bar -->
+    <div class="p-6 flex justify-end z-30 relative">
+      <button
+        id="settingsButton"
+        class="flex items-center justify-center"
+        aria-label="Abrir ajustes"
+        type="button"
+      >
+        <Settings
+          id="settingsIcon"
+          class="size-9 text-slate-400 hover:text-white transition-colors cursor-pointer icon-rotate"
+        />
+      </button>
+    </div>
+
+    <!-- Settings overlay -->
+    <div id="settingsOverlay" class="settings-overlay" aria-hidden="true">
+      <div id="settingsPanel" class="settings-panel">
+        <div class="flex items-center justify-between p-12">
+          <div>
+            <p class="text-slate-400 text-sm font-medium">Configuración</p>
+            <h2 class="text-white text-2xl font-black tracking-wide mt-2">
+              Ajustes del juego
+            </h2>
+          </div>
+          <button
+            id="settingsClose"
+            class="w-11 h-11 rounded-full bg-slate-800/80 border border-slate-700 flex items-center justify-center text-slate-300 hover:text-white hover:bg-slate-700 transition-all"
+            type="button"
+            aria-label="Cerrar ajustes"
+          >
+            <X class="w-5 h-5" />
+          </button>
+        </div>
+
+        <div class="px-8 pb-8 overflow-y-auto flex-1">
+          <div class="bg-slate-900/70 border border-slate-800 rounded-3xl p-4 backdrop-blur-md">
+
+            <div class="flex items-center justify-between py-3">
+              <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-2xl bg-slate-800 flex items-center justify-center">
+                  <Volume2 class="w-5 h-5 text-cyan-400" />
+                </div>
+                <div>
+                  <p class="text-white font-bold">Sonido</p>
+                  <p class="text-slate-400 text-sm">Efectos y música</p>
+                </div>
+              </div>
+              <label class="switch">
+                <input id="soundToggle" type="checkbox" checked />
+                <span class="slider"></span>
+              </label>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="py-3">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-11 h-11 rounded-2xl bg-slate-800 flex items-center justify-center">
+                  <ZoomIn class="w-5 h-5 text-violet-400" />
+                </div>
+                <div>
+                  <p class="text-white font-bold">Zoom de interfaz</p>
+                  <p class="text-slate-400 text-sm">Ajusta el tamaño visual</p>
+                </div>
+              </div>
+              <input id="zoomRange" type="range" min="80" max="120" value="100" class="w-full accent-yellow-400" />
+              <div class="flex justify-between mt-2 text-xs text-slate-500 font-bold">
+                <span>80%</span>
+                <span id="zoomValue" class="text-slate-300">100%</span>
+                <span>120%</span>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <button id="shareButton" class="menu-action-button" type="button">
+              <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-2xl bg-slate-800 flex items-center justify-center">
+                  <Share2 class="w-5 h-5 text-emerald-400" />
+                </div>
+                <div class="text-left">
+                  <p class="text-white font-bold">Compartir</p>
+                  <p class="text-slate-400 text-sm">Invita a tus amigos</p>
+                </div>
+              </div>
+              <ChevronRight class="w-5 h-5 text-slate-500" />
+            </button>
+
+            <div class="divider"></div>
+
+            <button class="menu-action-button" type="button">
+              <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-2xl bg-slate-800 flex items-center justify-center">
+                  <Bell class="w-5 h-5 text-amber-400" />
+                </div>
+                <div class="text-left">
+                  <p class="text-white font-bold">Notificaciones</p>
+                  <p class="text-slate-400 text-sm">Activa avisos del juego</p>
+                </div>
+              </div>
+              <ChevronRight class="w-5 h-5 text-slate-500" />
+            </button>
+
+            <div class="divider"></div>
+
+            <button class="menu-action-button text-red-400 hover:bg-red-500/10" type="button">
+              <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-2xl bg-red-500/10 flex items-center justify-center">
+                  <LogOut class="w-5 h-5 text-red-400" />
+                </div>
+                <div class="text-left">
+                  <p class="font-bold">Logout</p>
+                  <p class="text-red-300/70 text-sm">Cerrar sesión</p>
+                </div>
+              </div>
+              <ChevronRight class="w-5 h-5 text-red-300/50" />
+            </button>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Avatar & stats -->
+    <div class="flex flex-col items-center -mt-2 relative z-10">
+      <div class="relative mb-2">
+        <!-- Glow -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-blue-900/50 rounded-full blur-2xl -z-10"></div>
+
+        <!-- Avatar ring -->
+        <div class="w-32 h-32 rounded-full p-1.5 bg-linear-to-b from-yellow-300 to-yellow-600 shadow-2xl relative z-20 mx-auto">
+          <div class="w-full h-full rounded-full bg-slate-800 overflow-hidden border-4 border-blue-900 relative flex items-end justify-center">
+            {user.avatar ? (
+              <img
+                src={user.avatar}
+                alt={user.name}
+                class="w-full h-full object-cover object-top absolute inset-0"
+                loading="eager"
+                onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+              />
+              <div class="absolute inset-0 bg-blue-500 items-center justify-center hidden">
+                <UserIcon class="w-20 h-20 text-white" />
+              </div>
+            ) : (
+              <div class="absolute inset-0 bg-blue-500 flex items-center justify-center">
+                <UserIcon class="w-20 h-20 text-white" />
+              </div>
+            )}
+          </div>
+        </div>
+
+        <!-- Level & diamonds row -->
+        <div class="flex flex-row gap-2 items-center mt-10 w-screen px-12 justify-between">
+          <div class="flex items-center gap-1.5 drop-shadow-lg">
+            <Trophy class="w-6 h-6 text-yellow-400 fill-yellow-400" />
+            <span class="text-2xl font-black text-white tracking-wider">{level}</span>
+          </div>
+          <div class="flex items-center gap-1.5 drop-shadow-lg">
+            <Diamond class="w-6 h-6 text-pink-500 fill-pink-500" />
+            <span class="text-2xl font-black text-white tracking-wider">{user.diamonds}</span>
+          </div>
+        </div>
+      </div>
+
+      <h1 class="text-2xl font-black text-white tracking-wide">{user.name}</h1>
+
+      <div class="flex items-center gap-8 mt-3 text-slate-200">
+        <div class="flex items-center gap-2">
+          <Star class="w-5 h-5 text-yellow-400 fill-yellow-400" />
+          <span class="font-bold">{stars}</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <Coins class="w-5 h-5 text-yellow-400 fill-yellow-400" />
+          <span class="font-bold">{coins}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick action grid -->
+    <div class="grid grid-cols-5 gap-3 px-5 mt-8 relative z-10">
+      {
+        quickActions.map(({ icon: Icon, label }) => (
+          <button
+            class="aspect-square bg-slate-200 rounded-2xl flex items-center justify-center text-slate-800 hover:bg-white hover:scale-105 transition-all shadow-lg border-b-4 border-slate-300 active:border-b-0 active:translate-y-1"
+            aria-label={label}
+          >
+            <Icon class="w-7 h-7" />
+          </button>
+        ))
+      }
+    </div>
+
+    <!-- Owner badge -->
+    <div class="mx-5 mt-8 bg-slate-900/80 rounded-xl py-2.5 px-4 text-center border border-slate-800 backdrop-blur-sm relative z-10">
+      <span class="text-slate-400 text-sm font-medium">
+        Propiedad de <strong class="text-white ml-1">{user.ownerName}</strong>
+      </span>
+    </div>
+
+    <!-- Favorites (all users) -->
+    <div class="px-5 mt-8 relative z-10">
+      <h3 class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-3 ml-1">
+        Usuarios
+      </h3>
+      <div class="grid grid-cols-5 gap-3">
+        {
+          users.map((fav) => (
+            <a
+              href={`/profile/${fav.id}`}
+              aria-label={fav.name}
+              class:list={[
+                "aspect-square rounded-2xl overflow-hidden border-2 hover:scale-105 transition-transform shadow-md relative bg-slate-800",
+                fav.id === user.id
+                  ? "border-yellow-400/80 ring-2 ring-yellow-400/30"
+                  : "border-white/10",
+              ]}
+            >
+              {fav.avatar ? (
+                <img
+                  src={fav.avatar}
+                  alt={fav.name}
+                  class="w-full h-full object-cover object-top"
+                  loading="lazy"
+                />
+              ) : (
+                <div class="w-full h-full bg-blue-500 flex items-center justify-center">
+                  <UserIcon class="w-8 h-8 text-white" />
+                </div>
+              )}
+              <!-- Name tooltip on hover -->
+              <div class="absolute inset-x-0 bottom-0 bg-black/60 text-white text-[9px] font-black text-center py-0.5 translate-y-full group-hover:translate-y-0 transition-transform truncate px-1">
+                {fav.name}
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+
+    <!-- Menu links -->
+    <div class="px-5 mt-8 relative z-10 flex flex-col gap-4 mb-6">
+      {
+        menuLinks.map(({ icon: Icon, label }) => (
+          <button class="w-full bg-slate-900/60 border border-slate-800 rounded-2xl p-4 flex items-center justify-between group hover:bg-slate-800 transition-all backdrop-blur-sm">
+            <div class="flex items-center gap-4">
+              <Icon class="w-6 h-6 text-slate-400 group-hover:text-white transition-colors" />
+              <span class="font-bold text-lg tracking-wide">{label}</span>
+            </div>
+            <ChevronRight class="w-6 h-6 text-slate-500 group-hover:text-white transition-colors" />
+          </button>
+        ))
+      }
+    </div>
+
+  </main>
+
+  <Footer activePage="profile" />
+</Layout>
+
+<script>
+  const settingsButton = document.getElementById("settingsButton")
+  const settingsIcon = document.getElementById("settingsIcon")
+  const settingsOverlay = document.getElementById("settingsOverlay")
+  const settingsClose = document.getElementById("settingsClose")
+  const zoomRange = document.getElementById("zoomRange") as HTMLInputElement | null
+  const zoomValue = document.getElementById("zoomValue")
+  const shareButton = document.getElementById("shareButton")
+
+  const openMenu = () => {
+    settingsOverlay?.classList.add("is-open")
+    settingsIcon?.classList.add("rotate-180")
+    document.body.style.overflow = "hidden"
+  }
+
+  const closeMenu = () => {
+    settingsOverlay?.classList.remove("is-open")
+    settingsIcon?.classList.remove("rotate-180")
+    document.body.style.overflow = ""
+  }
+
+  settingsButton?.addEventListener("click", () => {
+    settingsOverlay?.classList.contains("is-open") ? closeMenu() : openMenu()
+  })
+
+  settingsClose?.addEventListener("click", closeMenu)
+
+  settingsOverlay?.addEventListener("click", (e) => {
+    if (e.target === settingsOverlay) closeMenu()
+  })
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeMenu()
+  })
+
+  zoomRange?.addEventListener("input", () => {
+    if (zoomValue) zoomValue.textContent = `${zoomRange!.value}%`
+  })
+
+  shareButton?.addEventListener("click", async () => {
+    const shareData = {
+      title: "Predy Clicker",
+      text: "Mira mi perfil en Predy Clicker",
+      url: window.location.href,
+    }
+
+    if (navigator.share) {
+      try { await navigator.share(shareData) } catch {}
+      return
+    }
+
+    try {
+      await navigator.clipboard.writeText(window.location.href)
+      alert("Enlace copiado al portapapeles")
+    } catch {
+      alert("No se pudo compartir el enlace")
+    }
+  })
+</script>
+
+<style>
+  .icon-rotate {
+    transition: transform 0.35s ease, color 0.25s ease;
+    transform-origin: center;
+  }
+
+  .rotate-180 {
+    transform: rotate(180deg);
+  }
+
+  .settings-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    background: rgba(2, 6, 23, 0);
+    backdrop-filter: blur(0px);
+    pointer-events: none;
+    transition: background 0.35s ease, backdrop-filter 0.35s ease;
+  }
+
+  .settings-panel {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    background:
+      radial-gradient(circle at top, rgba(59, 130, 246, 0.16), transparent 30%),
+      linear-gradient(to bottom, rgba(15, 23, 42, 0.98), rgba(2, 6, 23, 0.98));
+    transform: translateY(-100%);
+    opacity: 0.98;
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease;
+    will-change: transform;
+  }
+
+  .settings-overlay.is-open {
+    background: rgba(2, 6, 23, 0.55);
+    backdrop-filter: blur(8px);
+    pointer-events: auto;
+  }
+
+  .settings-overlay.is-open .settings-panel {
+    transform: translateY(0);
+  }
+
+  .menu-action-button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 0;
+    transition: background 0.2s ease, transform 0.2s ease;
+    border-radius: 18px;
+  }
+
+  .menu-action-button:active {
+    transform: scale(0.98);
+  }
+
+  .divider {
+    height: 1px;
+    width: 100%;
+    background: rgba(148, 163, 184, 0.12);
+  }
+
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 54px;
+    height: 32px;
+  }
+
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .slider {
+    position: absolute;
+    inset: 0;
+    cursor: pointer;
+    background: rgba(51, 65, 85, 1);
+    transition: 0.25s ease;
+    border-radius: 999px;
+    border: 1px solid rgba(71, 85, 105, 1);
+  }
+
+  .slider::before {
+    content: "";
+    position: absolute;
+    height: 24px;
+    width: 24px;
+    left: 3px;
+    top: 3px;
+    background: white;
+    transition: 0.25s ease;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  }
+
+  .switch input:checked + .slider {
+    background: linear-gradient(135deg, #facc15, #f59e0b);
+  }
+
+  .switch input:checked + .slider::before {
+    transform: translateX(22px);
+  }
+</style>

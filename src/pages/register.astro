@@ -1,0 +1,211 @@
+---
+import Layout from "../layouts/Layout.astro"
+import Input from "../components/ui/Input.astro"
+import Button from "../components/ui/Button.astro"
+import "flatpickr/dist/flatpickr.min.css"
+import "flatpickr/dist/themes/dark.css"
+---
+
+<Layout title="Registro - Predy Clicker">
+    <main
+        class="flex-1 flex flex-col bg-slate-950 min-h-screen pb-24 relative overflow-hidden p-14"
+    >
+        <!-- Background Effects -->
+        <div
+            class="absolute top-0 left-0 w-full h-full overflow-hidden -z-10 pointer-events-none"
+        >
+            <div
+                class="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-blue-500/10 rounded-full blur-[100px]"
+            >
+            </div>
+            <div
+                class="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-yellow-500/10 rounded-full blur-[100px]"
+            >
+            </div>
+        </div>
+
+        <div class="w-full flex flex-col gap-8">
+            <!-- Header -->
+            <div class="text-center space-y-2">
+                <h1
+                    class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-200 to-yellow-500 tracking-tight"
+                >
+                    CREAR CUENTA
+                </h1>
+                <p class="text-slate-400">Únete a Predy Clicker</p>
+            </div>
+
+            <!-- Form -->
+            <form
+                id="registerForm"
+                class="flex flex-col gap-5 bg-slate-900/40 p-6 rounded-2xl border border-slate-800/50 backdrop-blur-md shadow-xl"
+            >
+                <Input
+                    name="username"
+                    placeholder="Nombre de usuario"
+                    label="Usuario"
+                    required
+                />
+
+                <Input
+                    type="email"
+                    name="email"
+                    placeholder="Correo electrónico"
+                    label="Email"
+                    required
+                />
+
+                <!-- Gender Selector -->
+                <div class="flex flex-col gap-2">
+                    <label class="text-sm font-medium text-gray-300 ml-1"
+                        >Género</label
+                    >
+                    <div class="grid grid-cols-1 gap-2">
+                        <label class="cursor-pointer">
+                            <input
+                                type="radio"
+                                name="gender"
+                                value="hombre"
+                                class="peer sr-only"
+                                required
+                            />
+                            <div
+                                class="w-full p-3 rounded-xl bg-slate-900/60 border border-slate-700 text-slate-400 text-center peer-checked:bg-blue-900/40 peer-checked:border-blue-500 peer-checked:text-blue-400 transition-all hover:bg-slate-800"
+                            >
+                                Hombre
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input
+                                type="radio"
+                                name="gender"
+                                value="mujer"
+                                class="peer sr-only"
+                            />
+                            <div
+                                class="w-full p-3 rounded-xl bg-slate-900/60 border border-slate-700 text-slate-400 text-center peer-checked:bg-pink-900/40 peer-checked:border-pink-500 peer-checked:text-pink-400 transition-all hover:bg-slate-800"
+                            >
+                                Mujer
+                            </div>
+                        </label>
+                        <label class="cursor-pointer">
+                            <input
+                                type="radio"
+                                name="gender"
+                                value="otro"
+                                class="peer sr-only"
+                            />
+                            <div
+                                class="w-full p-3 rounded-xl bg-slate-900/60 border border-slate-700 text-slate-400 text-center peer-checked:bg-purple-900/40 peer-checked:border-purple-500 peer-checked:text-purple-400 transition-all hover:bg-slate-800"
+                            >
+                                No quiero decirlo
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Date Picker -->
+                <div class="flex flex-col gap-2">
+                    <label
+                        for="age"
+                        class="text-sm font-medium text-gray-300 ml-1"
+                        >Fecha de nacimiento</label
+                    >
+                    <input
+                        id="age"
+                        name="age"
+                        class="w-full bg-slate-900/60 border border-slate-700 rounded-xl px-4 py-3.5 text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition-all duration-300 backdrop-blur-sm cursor-pointer"
+                        placeholder="Selecciona tu fecha"
+                        required
+                    />
+                </div>
+
+                <Input
+                    type="password"
+                    name="password"
+                    placeholder="Contraseña"
+                    label="Contraseña"
+                    required
+                />
+
+                <div class="pt-4">
+                    <Button type="submit" variant="primary">
+                        Registrarse
+                    </Button>
+                </div>
+            </form>
+
+            <!-- Footer -->
+            <div class="text-center">
+                <p class="text-slate-400 text-sm">
+                    ¿Ya tienes cuenta?
+                    <a
+                        href="/"
+                        class="text-yellow-400 font-medium hover:text-yellow-300 transition-colors"
+                    >
+                        Inicia sesión
+                    </a>
+                </p>
+            </div>
+        </div>
+    </main>
+</Layout>
+
+<script>
+    import flatpickr from "flatpickr"
+    import { Spanish } from "flatpickr/dist/l10n/es.js"
+
+    // Initialize Date Picker
+    flatpickr("#age", {
+        locale: Spanish,
+        dateFormat: "d/m/Y",
+        disableMobile: true,
+        maxDate: "today",
+    })
+
+    // Form Logic
+    const registerForm = document.getElementById(
+        "registerForm",
+    ) as HTMLFormElement
+
+    registerForm?.addEventListener("submit", (e) => {
+        e.preventDefault()
+        // For now, just redirect to login or profile
+        alert("Registro simulado exitoso. Ahora puedes iniciar sesión.")
+        window.location.href = "/"
+    })
+</script>
+
+<style is:global>
+    /* Custom Flatpickr Overrides for our theme */
+    .flatpickr-calendar.dark {
+        background: #0f172a !important; /* slate-900 */
+        border: 1px solid #334155 !important; /* slate-700 */
+        box-shadow:
+            0 20px 25px -5px rgb(0 0 0 / 0.1),
+            0 8px 10px -6px rgb(0 0 0 / 0.1) !important;
+    }
+    .flatpickr-day.selected,
+    .flatpickr-day.startRange,
+    .flatpickr-day.endRange,
+    .flatpickr-day.selected.inRange,
+    .flatpickr-day.startRange.inRange,
+    .flatpickr-day.endRange.inRange,
+    .flatpickr-day.selected:focus,
+    .flatpickr-day.startRange:focus,
+    .flatpickr-day.endRange:focus,
+    .flatpickr-day.selected:hover,
+    .flatpickr-day.startRange:hover,
+    .flatpickr-day.endRange:hover,
+    .flatpickr-day.selected.prevMonthDay,
+    .flatpickr-day.startRange.prevMonthDay,
+    .flatpickr-day.endRange.prevMonthDay,
+    .flatpickr-day.selected.nextMonthDay,
+    .flatpickr-day.startRange.nextMonthDay,
+    .flatpickr-day.endRange.nextMonthDay {
+        background: #facc15 !important; /* yellow-400 */
+        border-color: #facc15 !important;
+        color: #0f172a !important; /* slate-900 */
+        font-weight: bold;
+    }
+</style>

@@ -1,0 +1,37 @@
+---
+interface Props {
+    type?: "button" | "submit" | "reset"
+    variant?: "primary" | "secondary" | "outline" | "ghost"
+    class?: string
+    id?: string
+}
+
+const {
+    type = "button",
+    variant = "primary",
+    class: className,
+    id,
+} = Astro.props
+
+const variants = {
+    primary:
+        "bg-yellow-400 text-slate-900 hover:bg-yellow-300 shadow-lg shadow-yellow-400/20 border border-transparent",
+    secondary:
+        "bg-slate-800 text-white hover:bg-slate-700 border border-slate-700",
+    outline:
+        "bg-transparent border-2 border-slate-700 text-slate-300 hover:border-yellow-400 hover:text-yellow-400",
+    ghost: "bg-transparent text-slate-400 hover:text-white",
+}
+---
+
+<button
+    type={type}
+    id={id}
+    class:list={[
+        "w-full py-3.5 px-6 rounded-xl font-bold text-lg transition-all duration-300 transform active:scale-95 flex items-center justify-center gap-2 cursor-pointer",
+        variants[variant],
+        className,
+    ]}
+>
+    <slot />
+</button>

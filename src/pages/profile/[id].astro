@@ -1,0 +1,14 @@
+---
+import UserProfile from "../../components/UserProfile.astro"
+import { users, getUserById } from "../../data/users"
+
+export const getStaticPaths = () =>
+  users.map((user) => ({ params: { id: user.id } }))
+
+const { id } = Astro.params
+const user = getUserById(id)
+
+if (!user) return Astro.redirect("/profile")
+---
+
+<UserProfile user={user} />
