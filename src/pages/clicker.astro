@@ -2,104 +2,98 @@
 import Layout from "../layouts/Layout.astro"
 import Footer from "../components/Footer.astro"
 import { Monitor } from "lucide-astro"
-
-const clickValue = 230
-const currentXP = 230
-const nextLevelXP = 1200
-const currentLevel = 4
-const nextLevel = 5
-const balance = 4600
-const rank = "TRILLONARIO"
-
-const xpPercent = Math.round((currentXP / nextLevelXP) * 100)
 ---
 
 <Layout title="Clicker - Predy Clicker">
-  <main class="flex-1 flex flex-col bg-slate-950 min-h-screen pb-28 relative overflow-hidden">
-
+  <main
+    class="flex-1 flex flex-col bg-slate-950 min-h-screen pb-20 relative overflow-hidden"
+  >
     <!-- Background glow -->
-    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 bg-blue-900/20 rounded-full blur-3xl pointer-events-none"></div>
+    <div
+      class="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 bg-blue-900/20 rounded-full blur-3xl pointer-events-none"
+    >
+    </div>
 
-    <div class="flex flex-col items-center px-5 pt-10 gap-6 relative z-10">
+    <div class="flex flex-col items-center px-5 pt-10 gap-5 relative z-10">
 
-      <!-- Credit card (clickable) -->
-      <button
-        id="clickCard"
-        type="button"
-        aria-label="Hacer click"
-        class="card-btn w-full max-w-sm rounded-3xl p-6 relative overflow-hidden select-none active:scale-95 transition-transform duration-100 shadow-2xl"
+      <!-- Credit card (display only) -->
+      <div
+        class="card-display w-full max-w-sm rounded-3xl p-6 relative overflow-hidden shadow-2xl select-none"
       >
-        <!-- Card gradient background -->
         <div class="absolute inset-0 bg-linear-to-br from-blue-600 via-blue-700 to-blue-900 rounded-3xl"></div>
-        <!-- Shine overlay -->
         <div class="absolute inset-0 bg-linear-to-tr from-white/5 via-white/10 to-transparent rounded-3xl pointer-events-none"></div>
-        <!-- Decorative circles -->
         <div class="absolute -top-8 -right-8 w-40 h-40 bg-blue-500/20 rounded-full"></div>
         <div class="absolute -bottom-12 -left-8 w-48 h-48 bg-blue-800/30 rounded-full"></div>
 
-        <!-- Card content -->
         <div class="relative z-10">
-          <!-- Top row -->
+          <!-- Top row: level + rank badge -->
           <div class="flex items-center justify-between mb-6">
-            <span class="text-white/90 font-black text-lg tracking-wide">Nivel {currentLevel}</span>
-            <span class="bg-white/15 border border-white/25 text-white text-xs font-black tracking-widest px-3 py-1.5 rounded-full backdrop-blur-sm">
-              {rank}
+            <span class="text-white/90 font-black text-lg tracking-wide">
+              Nivel <span id="cardLevel">1</span>
+            </span>
+            <span
+              id="cardRank"
+              class="bg-white/15 border border-white/25 text-white text-xs font-black tracking-widest px-3 py-1.5 rounded-full backdrop-blur-sm"
+            >
+              INDIGENTE
             </span>
           </div>
 
-          <!-- Card icons row -->
+          <!-- Card icons -->
           <div class="flex items-center gap-3 mb-8">
-            <!-- Contactless icon (SVG) -->
             <svg class="w-8 h-8 text-white/70" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-              <path d="M12 20c4.4 0 8-3.6 8-8s-3.6-8-8-8" stroke-linecap="round"/>
-              <path d="M12 16c2.2 0 4-1.8 4-4s-1.8-4-4-4" stroke-linecap="round"/>
-              <path d="M12 12.5a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1z" fill="currentColor" stroke="none"/>
+              <path d="M12 20c4.4 0 8-3.6 8-8s-3.6-8-8-8" stroke-linecap="round"></path>
+              <path d="M12 16c2.2 0 4-1.8 4-4s-1.8-4-4-4" stroke-linecap="round"></path>
+              <path d="M12 12.5a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1z" fill="currentColor" stroke="none"></path>
             </svg>
-            <!-- Chip -->
             <div class="w-10 h-8 rounded-md bg-yellow-300/80 border border-yellow-200/50 grid grid-cols-3 grid-rows-3 gap-px p-1">
               {Array.from({ length: 9 }).map(() => (
-                <div class="bg-yellow-600/40 rounded-[1px]"></div>
+                <div class="bg-yellow-600/40 rounded-[1px]" />
               ))}
             </div>
           </div>
 
           <!-- Balance -->
           <div class="flex justify-end">
-            <span class="text-white font-black text-4xl tracking-wider drop-shadow-lg">
-              {balance.toLocaleString("es-ES")}
+            <span id="cardBalance" class="text-white font-black text-4xl tracking-wider drop-shadow-lg">
+              0
             </span>
           </div>
         </div>
-      </button>
+      </div>
 
-      <!-- Click value + XP section -->
-      <div class="w-full max-w-sm bg-slate-900/80 border border-slate-800 rounded-3xl p-5 backdrop-blur-sm">
-
+      <!-- Stats + XP section -->
+      <div
+        id="xpSection"
+        class="w-full max-w-sm bg-slate-900/80 border border-slate-800 rounded-3xl p-5 backdrop-blur-sm"
+      >
         <!-- Coins per click -->
         <div class="flex items-center justify-center gap-1.5 mb-5">
-          <span class="text-white font-black text-3xl tracking-tight">{clickValue}</span>
-          <!-- Coin icon -->
+          <span class="text-white font-black text-3xl tracking-tight">1</span>
           <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none">
-            <circle cx="12" cy="12" r="10" fill="#f59e0b"/>
-            <circle cx="12" cy="12" r="8" fill="#fbbf24"/>
+            <circle cx="12" cy="12" r="10" fill="#f59e0b"></circle>
+            <circle cx="12" cy="12" r="8" fill="#fbbf24"></circle>
             <text x="12" y="16" text-anchor="middle" fill="#92400e" font-size="10" font-weight="bold" font-family="Outfit, sans-serif">$</text>
           </svg>
           <span class="text-slate-400 font-semibold text-lg">/ Click</span>
         </div>
 
-        <!-- Level progress -->
+        <!-- Level labels -->
         <div class="flex items-center justify-between text-sm font-bold mb-2">
-          <span class="text-slate-400">Nivel {currentLevel}</span>
-          <span class="text-slate-400">Nivel {nextLevel}</span>
+          <span id="xpLevelCurrent" class="text-slate-400">Nivel 1</span>
+          <span id="xpLevelNext" class="text-slate-400">Nivel 2</span>
         </div>
+
+        <!-- Progress bar -->
         <div class="w-full bg-slate-800 rounded-full h-3 overflow-hidden">
           <div
-            class="h-full bg-linear-to-r from-yellow-400 to-yellow-500 rounded-full transition-all duration-500"
-            style={`width: ${xpPercent}%`}
+            id="xpBar"
+            class="h-full bg-linear-to-r from-yellow-400 to-yellow-500 rounded-full transition-all duration-200"
+            style="width: 0%"
           ></div>
         </div>
-        <p class="text-center text-slate-500 text-sm font-bold mt-2">
-          {currentXP.toLocaleString("es-ES")} / {nextLevelXP.toLocaleString("es-ES")}
+        <p id="xpText" class="text-center text-slate-500 text-sm font-bold mt-2">
+          0 / 3
         </p>
       </div>
 
@@ -112,11 +106,20 @@ const xpPercent = Math.round((currentXP / nextLevelXP) * 100)
         <Monitor class="w-5 h-5 text-yellow-400" />
         <span class="text-white font-bold text-base tracking-wide">Multiplicar click</span>
       </button>
-
     </div>
 
-    <!-- Floating +coins indicator -->
-    <div id="floatingCoins" class="floating-coins pointer-events-none fixed z-50 font-black text-yellow-400 text-2xl opacity-0 select-none"></div>
+    <!-- Click zone — takes all remaining vertical space -->
+    <div
+      id="clickArea"
+      class="relative flex-1 min-h-[140px] mt-5 flex items-center justify-center cursor-pointer select-none touch-none overflow-hidden bg-[#0d0f15]"
+    >
+      <!-- Subtle grid texture -->
+      <div class="absolute inset-0 click-grid pointer-events-none opacity-20"></div>
+
+      <p id="clickHint" class="text-slate-600 text-sm font-bold tracking-widest uppercase pointer-events-none transition-opacity duration-500">
+        Toca aquí
+      </p>
+    </div>
 
   </main>
 
@@ -124,50 +127,142 @@ const xpPercent = Math.round((currentXP / nextLevelXP) * 100)
 </Layout>
 
 <script>
-  const card = document.getElementById("clickCard")
-  const floatingCoins = document.getElementById("floatingCoins")
+  // ── Rank config (ported from RN Money component) ──────────────────────────
+  const MONEY_RANK = [4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 26]
+  const STATUS_LABELS = [
+    "INDIGENTE", "POBRE", "CLASE BAJA", "CLASE MEDIA-BAJA",
+    "CLASE MEDIA", "CLASE MEDIA-ALTA", "CLASE ALTA", "ADINERADO",
+    "MILLONARIO", "MULTIMILLONARIO", "BILLONARIO", "MULTIBILLONARIO",
+    "TRILLONARIO",
+  ]
 
-  let balance = 4600
-  let clickValue = 230
+  // ── Level config ──────────────────────────────────────────────────────────
+  const DIFFICULTY_LEVELS = [3, 6, 9]
 
-  const showFloatingCoin = (x: number, y: number) => {
-    if (!floatingCoins) return
-    floatingCoins.textContent = `+${clickValue}`
-    floatingCoins.style.left = `${x}px`
-    floatingCoins.style.top = `${y}px`
-    floatingCoins.classList.remove("animate-float")
-    // Force reflow
-    void floatingCoins.offsetWidth
-    floatingCoins.classList.add("animate-float")
+  // ── State ─────────────────────────────────────────────────────────────────
+  let balance = 0
+  let level = 1
+  let progress = 0
+  let maxClickLevel = DIFFICULTY_LEVELS[0]
+  const maxRank = MONEY_RANK[MONEY_RANK.length - 1]
+
+  // ── DOM refs ──────────────────────────────────────────────────────────────
+  const cardBalance    = document.getElementById("cardBalance")!
+  const cardLevel      = document.getElementById("cardLevel")!
+  const cardRank       = document.getElementById("cardRank")!
+  const xpSection      = document.getElementById("xpSection")!
+  const xpBar          = document.getElementById("xpBar")!
+  const xpText         = document.getElementById("xpText")!
+  const xpLevelCurrent = document.getElementById("xpLevelCurrent")!
+  const xpLevelNext    = document.getElementById("xpLevelNext")!
+  const clickHint      = document.getElementById("clickHint")!
+  const clickArea      = document.getElementById("clickArea")!
+
+  // ── Helpers ───────────────────────────────────────────────────────────────
+  const getStatus = (amount: number): string => {
+    const idx = MONEY_RANK.findIndex((threshold) => amount < threshold)
+    return idx === -1 ? STATUS_LABELS[STATUS_LABELS.length - 1] : STATUS_LABELS[idx]
   }
 
-  card?.addEventListener("click", (e) => {
-    balance += clickValue
+  const updateUI = () => {
+    cardBalance.textContent = balance.toLocaleString("es-ES")
+    cardLevel.textContent   = String(level)
+    cardRank.textContent    = getStatus(balance)
 
-    const rect = card.getBoundingClientRect()
-    const x = e.clientX - 20
-    const y = e.clientY - 30
-    showFloatingCoin(x, y)
-  })
+    if (balance >= maxRank) {
+      xpSection.classList.add("hidden")
+    } else {
+      const pct = Math.round((progress / maxClickLevel) * 100)
+      xpBar.style.width            = `${pct}%`
+      xpText.textContent           = `${progress} / ${maxClickLevel}`
+      xpLevelCurrent.textContent   = `Nivel ${level}`
+      xpLevelNext.textContent      = `Nivel ${level + 1}`
+    }
+  }
+
+  const spawnLabel = (x: number, y: number) => {
+    const el = document.createElement("div")
+    el.textContent = "+1"
+    el.className = "coin-label"
+    el.style.left = `${x}px`
+    el.style.top  = `${y}px`
+    clickArea.appendChild(el)
+    el.addEventListener("animationend", () => el.remove(), { once: true })
+  }
+
+  // ── Click handler ─────────────────────────────────────────────────────────
+  const handleClick = (relX: number, relY: number) => {
+    // Hide hint after first click
+    if (balance === 0) clickHint.style.opacity = "0"
+
+    balance++
+
+    // Level progress
+    if (balance < maxRank) {
+      progress++
+
+      if (progress >= maxClickLevel) {
+        if (level < DIFFICULTY_LEVELS.length) {
+          progress      = 1
+          maxClickLevel = DIFFICULTY_LEVELS[level]
+          level++
+        } else {
+          progress = maxClickLevel // cap at max, bar hides via balance >= maxRank
+        }
+      }
+    }
+
+    updateUI()
+    spawnLabel(relX, relY)
+  }
+
+  clickArea.addEventListener("click", (e) => handleClick(e.offsetX, e.offsetY))
+
+  // Touch support (prevent ghost click on mobile)
+  clickArea.addEventListener("touchstart", (e) => {
+    e.preventDefault()
+    const t = e.changedTouches[0]
+    const rect = clickArea.getBoundingClientRect()
+    handleClick(t.clientX - rect.left, t.clientY - rect.top)
+  }, { passive: false })
 </script>
 
 <style>
-  .card-btn {
+  /* Click area grid texture */
+  .click-grid {
+    background-image:
+      linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+
+  /* Active press feedback on the click zone */
+  #clickArea:active {
+    background-color: #10121a;
+  }
+
+  /* Floating "+1" label — :global needed because the element is created dynamically in JS */
+  :global(.coin-label) {
+    position: absolute;
+    z-index: 9999;
+    pointer-events: none;
+    user-select: none;
+    font-family: "Outfit", sans-serif;
+    font-weight: 900;
+    font-size: 1.4rem;
+    color: #facc15;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.6);
+    animation: coinFloat 0.85s ease-in forwards;
+  }
+
+  @keyframes coinFloat {
+    0%   { opacity: 0;   transform: translateX(-50%) translateY(0)     scale(0.8); }
+    35%  { opacity: 1;   transform: translateX(-50%) translateY(-22px)  scale(1.15); }
+    72%  { opacity: 1;   transform: translateX(-50%) translateY(-50px)  scale(1); }
+    100% { opacity: 0;   transform: translateX(-50%) translateY(-68px)  scale(0.9); }
+  }
+
+  .card-display {
     -webkit-tap-highlight-color: transparent;
-    cursor: pointer;
-  }
-
-  .card-btn:active {
-    transform: scale(0.95);
-  }
-
-  @keyframes floatUp {
-    0%   { opacity: 1; transform: translateY(0) scale(1); }
-    60%  { opacity: 1; transform: translateY(-40px) scale(1.1); }
-    100% { opacity: 0; transform: translateY(-80px) scale(0.9); }
-  }
-
-  .animate-float {
-    animation: floatUp 0.75s ease-out forwards;
   }
 </style>
